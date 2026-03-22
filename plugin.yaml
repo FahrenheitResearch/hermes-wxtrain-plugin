@@ -1,0 +1,8 @@
+name: wxforge
+version: 1.0.0
+description: >
+  All-Rust ML weather data pipeline — fetch, decode, compute, render, and export
+  training datasets from HRRR/GFS/NAM/RAP/ERA5. Powered by wxforge.
+provides:
+  tools: true
+  hooks: false
