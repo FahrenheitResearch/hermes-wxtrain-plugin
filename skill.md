@@ -1,6 +1,6 @@
 ---
-name: wxforge-pipeline
-description: Guide for using the wxforge ML weather data pipeline — fetch, decode, compute, plan, and build training datasets
+name: wxtrain-pipeline
+description: Guide for using the wxtrain ML weather data pipeline — fetch, decode, compute, plan, and build training datasets
 version: 1.0.0
 metadata:
   hermes:
@@ -8,39 +8,39 @@ metadata:
     category: ml
 ---
 
-# wxforge ML Pipeline
+# wxtrain ML Pipeline
 
 You have 8 tools for building ML-ready weather datasets. All powered by pure Rust — no Python, no eccodes.
 
 ## Workflow
 
 ### Quick: "I want to see some weather data"
-1. `wxf_fetch` — download a field (e.g., HRRR CAPE)
-2. `wxf_render` — render it as a PNG
+1. `wxt_fetch` — download a field (e.g., HRRR CAPE)
+2. `wxt_render` — render it as a PNG
 3. Done
 
 ### Full: "Build me a training dataset"
-1. `wxf_plan` — plan the dataset (architecture + task → channels + export format)
-2. `wxf_fetch` — download the GRIB data
-3. `wxf_build` — extract arrays, compute derived fields, export NPY + manifests
+1. `wxt_plan` — plan the dataset (architecture + task → channels + export format)
+2. `wxt_fetch` — download the GRIB data
+3. `wxt_build` — extract arrays, compute derived fields, export NPY + manifests
 4. Done — training-ready arrays
 
 ## Tools
 
 | Tool | Purpose |
 |------|---------|
-| `wxf_models` | List supported models and sources |
-| `wxf_fetch` | Download GRIB fields via byte-range .idx |
-| `wxf_scan` | List all messages in a GRIB file |
-| `wxf_decode` | Decode a message — show stats (min, max, mean, grid) |
-| `wxf_calc` | Compute thermodynamic parameters |
-| `wxf_render` | Render a GRIB field as PNG |
-| `wxf_plan` | Plan a training dataset for an ML architecture |
-| `wxf_build` | Build training arrays from GRIB files |
+| `wxt_models` | List supported models and sources |
+| `wxt_fetch` | Download GRIB fields via byte-range .idx |
+| `wxt_scan` | List all messages in a GRIB file |
+| `wxt_decode` | Decode a message — show stats (min, max, mean, grid) |
+| `wxt_calc` | Compute thermodynamic parameters |
+| `wxt_render` | Render a GRIB field as PNG |
+| `wxt_plan` | Plan a training dataset for an ML architecture |
+| `wxt_build` | Build training arrays from GRIB files |
 
 ## Architecture-Aware Planning
 
-`wxf_plan` automatically selects features based on the ML architecture:
+`wxt_plan` automatically selects features based on the ML architecture:
 
 | Architecture | Default Features | Export Format | Loss |
 |---|---|---|---|

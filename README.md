@@ -1,6 +1,6 @@
-# wxforge — ML Weather Data Pipeline Plugin
+# wxtrain — ML Weather Data Pipeline Plugin
 
-A [Hermes Agent](https://github.com/NousResearch/hermes-agent) plugin for building ML-ready weather training datasets. Powered by [wxforge](https://github.com/FahrenheitResearch/wxforge), an all-Rust end-to-end pipeline.
+A [Hermes Agent](https://github.com/NousResearch/hermes-agent) plugin for building ML-ready weather training datasets. Powered by [wxtrain](https://github.com/FahrenheitResearch/wxtrain), an all-Rust end-to-end pipeline.
 
 ## What It Does
 
@@ -15,28 +15,28 @@ Ask Hermes to build training datasets from operational weather models:
 
 | Tool | Description |
 |------|-------------|
-| `wxf_models` | List supported weather models and sources |
-| `wxf_fetch` | Download GRIB fields via byte-range .idx |
-| `wxf_scan` | List all messages in a GRIB file |
-| `wxf_decode` | Decode a GRIB message — stats, grid dimensions, variable info |
-| `wxf_calc` | Thermodynamic calculations (theta, theta_e, RH) |
-| `wxf_render` | Render a GRIB field as PNG |
-| `wxf_plan` | Plan a training dataset for an ML architecture |
-| `wxf_build` | Build training arrays from GRIB files |
+| `wxt_models` | List supported weather models and sources |
+| `wxt_fetch` | Download GRIB fields via byte-range .idx |
+| `wxt_scan` | List all messages in a GRIB file |
+| `wxt_decode` | Decode a GRIB message — stats, grid dimensions, variable info |
+| `wxt_calc` | Thermodynamic calculations (theta, theta_e, RH) |
+| `wxt_render` | Render a GRIB field as PNG |
+| `wxt_plan` | Plan a training dataset for an ML architecture |
+| `wxt_build` | Build training arrays from GRIB files |
 
 ## Pipeline
 
 ```
-wxf_plan (architecture + task → channel spec + export format)
+wxt_plan (architecture + task → channel spec + export format)
     ↓
-wxf_fetch (NOAA/ECMWF → byte-range GRIB download)
+wxt_fetch (NOAA/ECMWF → byte-range GRIB download)
     ↓
-wxf_build (decode → compute derived fields → export NPY/Parquet/WebDataset)
+wxt_build (decode → compute derived fields → export NPY/Parquet/WebDataset)
 ```
 
 ## Architecture-Aware Planning
 
-`wxf_plan` knows how to prepare data for different ML architectures:
+`wxt_plan` knows how to prepare data for different ML architectures:
 
 | Architecture | Channels | Format | Loss |
 |---|---|---|---|
@@ -72,7 +72,7 @@ wxf_build (decode → compute derived fields → export NPY/Parquet/WebDataset)
 100% Rust core. No Python, no C, no eccodes, no Fortran.
 
 ```
-wxforge binary (22,488 lines of Rust)
+wxtrain binary (22,488 lines of Rust)
 ├── wx-fetch   — download planning, byte-range fetch, CDS auth
 ├── wx-grib    — native GRIB1/2 decode (JPEG2000, CCSDS/AEC)
 ├── wx-calc    — 100+ met calculations (MetPy parity verified)
@@ -86,15 +86,15 @@ wxforge binary (22,488 lines of Rust)
 ## Setup
 
 ```bash
-# 1. Build wxforge
-git clone https://github.com/FahrenheitResearch/wxforge
-cd wxforge && cargo build --release
+# 1. Build wxtrain
+git clone https://github.com/FahrenheitResearch/wxtrain
+cd wxtrain && cargo build --release
 
 # 2. Copy plugin to Hermes
-cp -r wxforge-plugin ~/.hermes/plugins/wxforge
+cp -r wxtrain-plugin ~/.hermes/plugins/wxtrain
 
 # 3. (Optional) set binary path
-export WXFORGE_PATH=/path/to/wxforge/target/release/wxforge
+export WXTRAIN_PATH=/path/to/wxtrain/target/release/wxtrain
 ```
 
 ## Output Formats
@@ -108,10 +108,10 @@ export WXFORGE_PATH=/path/to/wxforge/target/release/wxforge
 
 ## Companion Plugin
 
-This plugin pairs with the [Hermes Weather Plugin](https://github.com/FahrenheitResearch/hermes-weather-plugin) — use the weather plugin to explore and visualize data, then use wxforge to build training datasets from the same models.
+This plugin pairs with the [Hermes Weather Plugin](https://github.com/FahrenheitResearch/hermes-weather-plugin) — use the weather plugin to explore and visualize data, then use wxtrain to build training datasets from the same models.
 
 ## Credits
 
-- **wxforge engine**: Built with Codex
+- **wxtrain engine**: Built with Codex
 - **Meteorological calculations**: Verified against MetPy test suites
 - **Plugin platform**: [Hermes Agent](https://github.com/NousResearch/hermes-agent) by Nous Research

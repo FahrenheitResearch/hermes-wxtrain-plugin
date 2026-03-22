@@ -1,4 +1,4 @@
-"""wxforge tool handlers — shell out to the wxforge binary."""
+"""wxtrain tool handlers — shell out to the wxtrain binary."""
 
 import json
 import logging
@@ -11,41 +11,41 @@ logger = logging.getLogger(__name__)
 
 _EXE = ".exe" if os.name == "nt" else ""
 WXFORGE = os.environ.get(
-    "WXFORGE_PATH",
-    str(Path.home() / "wxforge" / "target" / "release" / f"wxforge{_EXE}")
+    "WXTRAIN_PATH",
+    str(Path.home() / "wxtrain" / "target" / "release" / f"wxtrain{_EXE}")
 )
 
-_OUT_DIR = Path.home() / ".hermes" / "wxforge" / "data"
+_OUT_DIR = Path.home() / ".hermes" / "wxtrain" / "data"
 _OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-_IMG_DIR = Path.home() / ".hermes" / "wxforge" / "images"
+_IMG_DIR = Path.home() / ".hermes" / "wxtrain" / "images"
 _IMG_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def check_wxforge():
+def check_wxtrain():
     return os.path.isfile(WXFORGE)
 
 
 def _run(args, timeout=120):
-    """Run wxforge command, return stdout."""
+    """Run wxtrain command, return stdout."""
     cmd = [WXFORGE] + args
     try:
         result = subprocess.run(
             cmd, capture_output=True, text=True, timeout=timeout
         )
         if result.returncode != 0:
-            err = result.stderr.strip() or f"wxforge exited {result.returncode}"
+            err = result.stderr.strip() or f"wxtrain exited {result.returncode}"
             return json.dumps({"error": err[:500]})
         return result.stdout.strip()
     except subprocess.TimeoutExpired:
-        return json.dumps({"error": f"wxforge timed out ({timeout}s)"})
+        return json.dumps({"error": f"wxtrain timed out ({timeout}s)"})
     except FileNotFoundError:
-        return json.dumps({"error": f"wxforge not found at {WXFORGE}"})
+        return json.dumps({"error": f"wxtrain not found at {WXFORGE}"})
     except Exception as e:
         return json.dumps({"error": str(e)[:200]})
 
 
-def wxf_fetch(args: dict, **kwargs) -> str:
+def wxt_fetch(args: dict, **kwargs) -> str:
     model = args.get("model", "hrrr")
     search = args.get("search")
     if not search:
@@ -81,7 +81,7 @@ def wxf_fetch(args: dict, **kwargs) -> str:
         })
 
 
-def wxf_decode(args: dict, **kwargs) -> str:
+def wxt_decode(args: dict, **kwargs) -> str:
     f = args.get("file")
     if not f:
         return json.dumps({"error": "file is required"})
@@ -89,7 +89,7 @@ def wxf_decode(args: dict, **kwargs) -> str:
     return _run(["decode-grib", "--file", f, "--message", str(msg)])
 
 
-def wxf_scan(args: dict, **kwargs) -> str:
+def wxt_scan(args: dict, **kwargs) -> str:
     f = args.get("file")
     if not f:
         return json.dumps({"error": "file is required"})
@@ -101,7 +101,7 @@ def wxf_scan(args: dict, **kwargs) -> str:
         return json.dumps({"scan": result[:1000]})
 
 
-def wxf_calc(args: dict, **kwargs) -> str:
+def wxt_calc(args: dict, **kwargs) -> str:
     t = args.get("temperature_c")
     td = args.get("dewpoint_c")
     p = args.get("pressure_hpa")
@@ -131,7 +131,7 @@ def wxf_calc(args: dict, **kwargs) -> str:
         return json.dumps(params)
 
 
-def wxf_render(args: dict, **kwargs) -> str:
+def wxt_render(args: dict, **kwargs) -> str:
     f = args.get("file")
     if not f:
         return json.dumps({"error": "file is required"})
@@ -163,7 +163,7 @@ def wxf_render(args: dict, **kwargs) -> str:
         return json.dumps({"status": result[:300]})
 
 
-def wxf_plan(args: dict, **kwargs) -> str:
+def wxt_plan(args: dict, **kwargs) -> str:
     arch = args.get("architecture")
     task = args.get("task")
     name = args.get("dataset_name")
@@ -194,7 +194,7 @@ def wxf_plan(args: dict, **kwargs) -> str:
         return json.dumps({"spec_file": spec_path, "plan_output": plan_result[:500]})
 
 
-def wxf_build(args: dict, **kwargs) -> str:
+def wxt_build(args: dict, **kwargs) -> str:
     f = args.get("file")
     if not f:
         return json.dumps({"error": "file is required"})
@@ -232,7 +232,7 @@ def wxf_build(args: dict, **kwargs) -> str:
         })
 
 
-def wxf_models(args: dict, **kwargs) -> str:
+def wxt_models(args: dict, **kwargs) -> str:
     result = _run(["models"])
     try:
         json.loads(result)

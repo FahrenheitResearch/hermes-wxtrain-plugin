@@ -1,7 +1,7 @@
-"""Tool schemas for the wxforge ML pipeline plugin."""
+"""Tool schemas for the wxtrain ML pipeline plugin."""
 
 WXF_FETCH = {
-    "name": "wxf_fetch",
+    "name": "wxt_fetch",
     "description": (
         "Download weather model data via byte-range .idx subsetting. "
         "Fetches specific GRIB fields from NOAA operational models. "
@@ -37,7 +37,7 @@ WXF_FETCH = {
 }
 
 WXF_DECODE = {
-    "name": "wxf_decode",
+    "name": "wxt_decode",
     "description": (
         "Decode a GRIB file and return field statistics — min, max, mean, grid dimensions, "
         "variable name, level, reference time. Pure Rust GRIB1/2 decoder (no eccodes)."
@@ -59,7 +59,7 @@ WXF_DECODE = {
 }
 
 WXF_SCAN = {
-    "name": "wxf_scan",
+    "name": "wxt_scan",
     "description": (
         "Scan a GRIB file and list all messages — variable, level, grid dimensions, "
         "reference time. Useful for exploring what fields are in a file."
@@ -77,7 +77,7 @@ WXF_SCAN = {
 }
 
 WXF_CALC = {
-    "name": "wxf_calc",
+    "name": "wxt_calc",
     "description": (
         "Run meteorological calculations — thermodynamics (theta, theta_e, RH, LCL), "
         "kinematics, severe weather indices. All verified against MetPy."
@@ -94,7 +94,7 @@ WXF_CALC = {
 }
 
 WXF_RENDER = {
-    "name": "wxf_render",
+    "name": "wxt_render",
     "description": (
         "Render a GRIB field as a PNG image with colormap. "
         "Produces a heat/cool/viridis-colored visualization of the data."
@@ -121,7 +121,7 @@ WXF_RENDER = {
 }
 
 WXF_PLAN = {
-    "name": "wxf_plan",
+    "name": "wxt_plan",
     "description": (
         "Plan a training dataset for a specific ML architecture. "
         "Given an architecture (swin_transformer, diffusion, classical_ml, forecast_graph_network) "
@@ -160,11 +160,11 @@ WXF_PLAN = {
 }
 
 WXF_BUILD = {
-    "name": "wxf_build",
+    "name": "wxt_build",
     "description": (
         "Build a training dataset from GRIB files — extracts fields, computes derived channels, "
         "renders previews, and exports NPY arrays with manifests. "
-        "Use wxf_fetch first to download data, then wxf_build to process it."
+        "Use wxt_fetch first to download data, then wxt_build to process it."
     ),
     "parameters": {
         "type": "object",
@@ -187,7 +187,7 @@ WXF_BUILD = {
 }
 
 WXF_MODELS = {
-    "name": "wxf_models",
+    "name": "wxt_models",
     "description": (
         "List all supported weather models with their sources, products, "
         "and forecast hour ranges."
